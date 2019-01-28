@@ -28,7 +28,7 @@ function howmanyswitches(nx) {
 }
 
 function howmanyperswitch(nx) {
-    return (nx*2) / howmanyswitches(nx);
+    return Math.round((nx*2) / howmanyswitches(nx));
 }
 
 function addNewRow(nx) {
@@ -48,8 +48,8 @@ function createRow(nx, ny) {
 
     for(i=0; i<nx; i++) {
         x=(rectsize*i)+50
-        //console.log(magicnumber)
-        //console.log(anothermagicnumber)
+        console.log(magicnumber)
+        console.log(anothermagicnumber)
         
         if(i == (magicnumber + anothermagicnumber - 1)) {
 
@@ -61,12 +61,9 @@ function createRow(nx, ny) {
         }
 
         var place = {x: x, y: ny, text: cursw['text']+portnumber}
-        if(portnumber == (howmanyperswitch(nx)+skipports)) {
-            var portnumber = 1 + skipports;
-            var cursw={x: 0, y: 0, text: String.fromCharCode(64 + (switches.length+1))}
-        } else {
-            portnumber++;
-        }        
+        console.log("Portnumber: "+portnumber);
+
+        portnumber++;
         
         createPlace(place)
         places.push(place)
@@ -74,8 +71,8 @@ function createRow(nx, ny) {
         createPlace(place)
         places.push(place)
 
-        //console.log("Portnumber: "+portnumber)
-        if(portnumber == (howmanyperswitch(nx)+skipports)) {
+        console.log("Portnumber: "+portnumber)
+        if(portnumber == (howmanyperswitch(nx)+skipports) || (portnumber-1) == (howmanyperswitch(nx)+skipports)) {
             var portnumber = 1 + skipports;
             var cursw={x: 0, y: 0, text: String.fromCharCode(64 + (switches.length+1))}
         } else {
