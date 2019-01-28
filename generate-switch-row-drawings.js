@@ -5,12 +5,13 @@ ctx.canvas.width  = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 ctx.fill();
 
-var rectsize = 30;
+var rectsize = 45;
 var switchsize = 24;
 var skipports = 2;
 
 var rows = []
 var allswitches = []
+
 
 // Execute a function when the user releases a key on the keyboard
 var input = document.getElementById("num")
@@ -32,7 +33,7 @@ function howmanyperswitch(nx) {
 }
 
 function addNewRow(nx) {
-    ny = 50 + (rows.length * 100)
+    ny = 50 + (rows.length * 150)
     createRow(nx, ny)
 }
 
@@ -112,8 +113,8 @@ function createSwitch(sw) {
     ctx.fillStyle = 'black';
     ctx.fillRect(sw['x'], sw['y'], rectsize/1.5, rectsize/1.5);
     ctx.fillStyle = 'white';
-    ctx.font = '16px Courier';
-    ctx.fillText(sw['text'], (sw['x']+5), (sw['y']+15))
+    ctx.font = '12px Courier';
+    ctx.fillText(sw['text'], (sw['x']+4), (sw['y']+14))
     ctx.stroke();
 }
 
@@ -124,6 +125,38 @@ function createPlace(place) {
     ctx.lineWidth = "1";
     ctx.strokeStyle = "black";
     ctx.rect(place['x'], place['y'], rectsize, rectsize);
-    ctx.fillText(place['text'], (place['x']+5), (place['y']+18))
+    ctx.fillText(place['text'], (place['x']+(rectsize/2)-(rectsize/4)), (place['y']+28))
     ctx.stroke();
 }
+
+function dlImage() {
+    var canvas = document.getElementById("canvas");
+    var link = document.getElementById('link');
+    link.setAttribute('download', 'switchport-generated.png');
+    link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+    link.click();
+}
+
+var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    
+    window.addEventListener('load', resize, false);
+    window.addEventListener('resize', resize, false); // JQuery: $(window).resize(function() {...});
+
+    /**
+     * Scale proportionally: If the width of the canvas > the height, the canvas height
+     * equals the height of the browser window. Else, the canvas width equals the width of the browser window.
+     * If the window is resized, the size of the canvas changes dynamically.
+     */
+    function resize() {
+        var ratio = canvas.width / canvas.height;
+        var canvas_height = window.innerHeight;
+        var canvas_width = canvas_height * ratio;
+        if(canvas_width>window.innerWidth){
+            canvas_width=window.innerWidth;
+            canvas_height=canvas_width/ratio;
+        }
+
+        canvas.style.width = canvas_width + 'px';
+        canvas.style.height = canvas_height + 'px';
+    }
