@@ -75,14 +75,14 @@ function createRow(nx, ny, redraw) {
 
             numsw = numsw + 1;
             anothermagicnumber = (Math.ceil(howmanyperswitch(nx)/2)) * numsw;
-            cursw = {x: (x+(rectsize/1.5)), y: (ny+(rectsize/1.5)), text: String.fromCharCode(64 + (switches.length+1))}
+            cursw = {x: (x+(rectsize/1.5)), y: (ny+(rectsize/1.5)), text: String.fromCharCode(64 + (switches.length+1)), row: ((rows.length*2)+1), switch: ((rows.length*2)+1)+cursw['text']}
             createSwitch(cursw)
             if(!redraw) {
                 switches.push(cursw)
             }
         }
 
-        var place = {x: x, y: ny, text: cursw['text']+portnumber, i: (i+1)}
+        var place = {x: x, y: ny, text: cursw['text']+portnumber, i: (i+1), switch: ((rows.length*2)+1)+cursw['text'], portnumber: portnumber, row: ((rows.length*2)+1), seat: (i+1)}
         // console.log("Portnumber: "+portnumber);
 
         portnumber++;
@@ -90,7 +90,7 @@ function createRow(nx, ny, redraw) {
 
         createPlace(place)
         places.push(place)
-        var place = {x: x, y: (ny+rectsize), text: cursw['text']+portnumber, i: (i+1)}
+        var place = {x: x, y: (ny+rectsize), text: cursw['text']+portnumber, i: (i+1), switch: ((rows.length*2)+1)+cursw['text'], portnumber: portnumber, row: ((rows.length*2)+2), seat: (i+1)}
         createPlace(place)
         places.push(place)
 
@@ -154,6 +154,16 @@ function dlImage() {
     var link = document.getElementById('link');
     link.setAttribute('download', 'switchport-generated.png');
     link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+}
+
+function dlJson() {
+    var jsondl = []
+    jsondl.push(rows);
+    jsondl.push(allswitches);
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsondl));
+    var dlAnchorElem = document.getElementById('link2');
+    dlAnchorElem.setAttribute("href",     dataStr     );
+    dlAnchorElem.setAttribute("download", "generated-rows.json");
 }
 
 var canvas = document.getElementById('canvas');
