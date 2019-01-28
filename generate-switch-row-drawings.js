@@ -46,10 +46,13 @@ function createRow(nx, ny) {
     var portnumber = 1 + skipports;
     var cursw={x: 0, y: 0, text: "A"}
 
+    createRowNumber(25, ny, ((rows.length*2)+1))
+    createRowNumber(25, ny+rectsize, ((rows.length*2)+2))
+
     for(i=0; i<nx; i++) {
         x=(rectsize*i)+50
-        console.log(magicnumber)
-        console.log(anothermagicnumber)
+        // console.log(magicnumber)
+        // console.log(anothermagicnumber)
         
         if(i == (magicnumber + anothermagicnumber - 1)) {
 
@@ -60,18 +63,19 @@ function createRow(nx, ny) {
             switches.push(cursw)
         }
 
-        var place = {x: x, y: ny, text: cursw['text']+portnumber}
-        console.log("Portnumber: "+portnumber);
+        var place = {x: x, y: ny, text: cursw['text']+portnumber, i: (i+1)}
+        // console.log("Portnumber: "+portnumber);
 
         portnumber++;
-        
+        createPlaceNumber(x, ny, (i+1))
+
         createPlace(place)
         places.push(place)
-        var place = {x: x, y: (ny+rectsize), text: cursw['text']+portnumber}
+        var place = {x: x, y: (ny+rectsize), text: cursw['text']+portnumber, i: (i+1)}
         createPlace(place)
         places.push(place)
 
-        console.log("Portnumber: "+portnumber)
+        // console.log("Portnumber: "+portnumber)
         if(portnumber == (howmanyperswitch(nx)+skipports) || (portnumber-1) == (howmanyperswitch(nx)+skipports)) {
             var portnumber = 1 + skipports;
             var cursw={x: 0, y: 0, text: String.fromCharCode(64 + (switches.length+1))}
@@ -82,6 +86,24 @@ function createRow(nx, ny) {
     }
     rows.push(places)
     allswitches.push(switches)
+}
+
+function createRowNumber(x, y, n) {
+    ctx.beginPath();
+    ctx.lineWidth = "1";
+    ctx.fillStyle = 'black';
+    ctx.font = '18px Courier';
+    ctx.fillText(n, x, y+(rectsize/2)+(18/4))
+    ctx.stroke()
+}
+
+function createPlaceNumber(x, y, n, dir) {
+    ctx.beginPath();
+    ctx.lineWidth = "1";
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Courier';
+    ctx.fillText(n, x+(rectsize/2)-(rectsize/4), y-5)
+    ctx.stroke()
 }
 
 function createSwitch(sw) {
