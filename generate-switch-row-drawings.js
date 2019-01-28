@@ -32,12 +32,28 @@ function howmanyperswitch(nx) {
     return Math.round((nx*2) / howmanyswitches(nx));
 }
 
-function addNewRow(nx) {
+function addNewRow(nx, redraw=false) {
     ny = 50 + (rows.length * 150)
-    createRow(nx, ny)
+    createRow(nx, ny, redraw)
+    var nrows = document.getElementById('n-rows')
+    var nplaces = document.getElementById('n-places')
+    var nports = document.getElementById('n-ports')
+    var nswitches = document.getElementById('n-switches')
+    nrows.textContent = rows.length
+    nswitches.textContent = countAllChildren(allswitches)
+    nplaces.textContent = countAllChildren(rows)
+    nports.textContent = countAllChildren(allswitches) * switchsize;
 }
 
-function createRow(nx, ny) {
+function countAllChildren(arr) {
+    total = 0;
+    for(i=0; i<arr.length; i++) {
+        total += arr[i].length;
+    }
+    return total
+}
+
+function createRow(nx, ny, redraw) {
     var places = []
     var switches = []
     var place = {x: 50, y:50}
@@ -61,7 +77,9 @@ function createRow(nx, ny) {
             anothermagicnumber = (Math.ceil(howmanyperswitch(nx)/2)) * numsw;
             cursw = {x: (x+(rectsize/1.5)), y: (ny+(rectsize/1.5)), text: String.fromCharCode(64 + (switches.length+1))}
             createSwitch(cursw)
-            switches.push(cursw)
+            if(!redraw) {
+                switches.push(cursw)
+            }
         }
 
         var place = {x: x, y: ny, text: cursw['text']+portnumber, i: (i+1)}
@@ -85,7 +103,9 @@ function createRow(nx, ny) {
         }
 
     }
-    rows.push(places)
+    if(!redraw) {
+        rows.push(places)
+    }
     allswitches.push(switches)
 }
 
