@@ -134,7 +134,6 @@ function dlImage() {
     var link = document.getElementById('link');
     link.setAttribute('download', 'switchport-generated.png');
     link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
-    link.click();
 }
 
 var canvas = document.getElementById('canvas');
