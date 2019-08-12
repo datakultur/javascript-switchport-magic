@@ -14,11 +14,12 @@ var allswitches = []
 
 
 // Execute a function when the user releases a key on the keyboard
+var newline = document.getElementById("newline")
 var input = document.getElementById("num")
 input.addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
-        addNewRow(input.value)
+        addNewRow(input.value, false, newline.checked)
     }
   });
 
@@ -32,9 +33,21 @@ function howmanyperswitch(nx) {
     return Math.round((nx*2) / howmanyswitches(nx));
 }
 
-function addNewRow(nx, redraw=false) {
-    ny = 50 + (rows.length * 150)
-    createRow(nx, ny, redraw)
+function addNewRow(nx, redraw=false, newline=true) {
+    var ny = 0;
+    var xbegin = 50;
+    if(newline) {
+        ny = 50 + (rows.length * 150)
+    } else {
+        if(rows.length>0) {
+            ny = 50 + ((rows.length-1) * 150)
+        } else {
+            ny = 50;
+        }
+        //xbegin = 50 + (rows[rows.length-1].length/2+1)*rectsize
+        xbegin = rows[rows.length-1][rows[rows.length-1].length-1].x + rectsize*2.5
+    }
+    createRow(nx, ny, redraw, xbegin)
     var nrows = document.getElementById('n-rows')
     var nplaces = document.getElementById('n-places')
     var nports = document.getElementById('n-ports')
@@ -53,7 +66,7 @@ function countAllChildren(arr) {
     return total
 }
 
-function createRow(nx, ny, redraw) {
+function createRow(nx, ny, redraw, xbegin) {
     var places = []
     var switches = []
     var place = {x: 50, y:50}
@@ -62,12 +75,14 @@ function createRow(nx, ny, redraw) {
     var numsw = 0;
     var portnumber = 1 + skipports;
     var cursw={x: 0, y: 0, text: "A"}
-
-    createRowNumber(25, ny, ((rows.length*2)+1))
-    createRowNumber(25, ny+rectsize, ((rows.length*2)+2))
+    if(xbegin==50) {
+        createRowNumber((xbegin-25), ny, ((rows.length*2)+1))
+        createRowNumber((xbegin-25), ny+rectsize, ((rows.length*2)+2))
+    }
+    
 
     for(i=0; i<nx; i++) {
-        x=(rectsize*i)+50
+        x=(rectsize*i)+xbegin
         // console.log(magicnumber)
         // console.log(anothermagicnumber)
         
@@ -104,7 +119,11 @@ function createRow(nx, ny, redraw) {
 
     }
     if(!redraw) {
-        rows.push(places)
+        if(xbegin==50) {
+            rows.push(places)
+        } else {
+            rows[rows.length-1] = rows[rows.length-1].concat(places)
+        }
     }
     allswitches.push(switches)
 }
