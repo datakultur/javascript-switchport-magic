@@ -66,9 +66,10 @@ function countAllChildren(arr) {
     return total
 }
 
+var outside_switches = []
+
 function createRow(nx, ny, redraw, xbegin) {
     var places = []
-    var switches = []
     var place = {x: 50, y:50}
     var magicnumber = Math.ceil((nx/howmanyswitches(nx))/2)
     var anothermagicnumber = 0;
@@ -78,6 +79,9 @@ function createRow(nx, ny, redraw, xbegin) {
     if(xbegin==50) {
         createRowNumber((xbegin-25), ny, ((rows.length*2)+1))
         createRowNumber((xbegin-25), ny+rectsize, ((rows.length*2)+2))
+        var switches = []
+    } else {
+        var switches = outside_switches;
     }
     
 
@@ -125,6 +129,7 @@ function createRow(nx, ny, redraw, xbegin) {
             rows[rows.length-1] = rows[rows.length-1].concat(places)
         }
     }
+    outside_switches = switches
     allswitches.push(switches)
 }
 
