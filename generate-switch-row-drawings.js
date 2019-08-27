@@ -75,13 +75,14 @@ function createRow(nx, ny, redraw, xbegin) {
     var anothermagicnumber = 0;
     var numsw = 0;
     var portnumber = 1 + skipports;
-    var cursw={x: 0, y: 0, text: "A"}
     if(xbegin==50) {
         createRowNumber((xbegin-25), ny, ((rows.length*2)+1))
         createRowNumber((xbegin-25), ny+rectsize, ((rows.length*2)+2))
         var switches = []
+        var cursw={x: 0, y: 0, text: "A"}
     } else {
         var switches = outside_switches;
+        var cursw={x: 0, y: 0, text: String.fromCharCode(64 + (switches.length+1))}
     }
     
 
